@@ -100,5 +100,6 @@ public class Solution {
 //			System.out.println(Answer);
 //			System.out.print("# "+i+" ");		
 		}
+		sc.close();
 	}
 }
