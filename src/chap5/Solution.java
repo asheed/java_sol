@@ -21,23 +21,20 @@ public class Solution {
 	static int testcases = 0;
 	
 	//static String[] input = new String[2];  
-	static char[][] input = new char[2][10];
-	static char[][] r_input = new char [2][10]; // 반전
+	static char[][] input = new char[2][21];
+	static char[][] r_input = new char[2][21]; // 반전
 	// 올림을 저장하기 위한 char array 정의
-	static char[] up = new char[10];
+	static char[] up = new char[21];
 	
-	static char[] re = new char[10];
-	static char[] Answer = new char[10];
-	static char[] realAnswer = new char[10];
+	static char[] re = new char[21];
+	static char[] Answer = new char[21];
+	static char[] realAnswer = new char[21];
 	static String s;
 	
-	static {
-		for (int i = 0; i < up.length; i++ ) {
-			up[i] = '0';
-			re[i] = '0';
-			Answer[i] = '0';		
-		}
-	}
+	/*
+	 * static { for (int i = 0; i < up.length; i++ ) { up[i] = '0'; re[i] = '0';
+	 * Answer[i] = '0'; } }
+	 */
 	
 	static Div plus(char c1, char c2) {
 		if(c1 == '0' && c2 == '0') {
@@ -64,6 +61,14 @@ public class Solution {
 		
 		testcases = sc.nextInt();
 		for (int i = 0; i < testcases; i++) {
+			for (int j = 0; j < up.length; j++) { // 변수 초기화
+				r_input[0][j] = '0';
+				r_input[1][j] = '0';
+				up[j] = '0';
+				re[j] = '0';
+				Answer[j] = '0';
+				realAnswer[j] = '0';
+			}
 			input[0] = sc.next().toCharArray();
 			input[1] = sc.next().toCharArray();
 			
@@ -87,18 +92,22 @@ public class Solution {
 			for (int k = 0; k < up.length; k++) {
 				Div temp;
 				temp = plus(re[k],up[k]);
-				Answer[k] = temp.re;
+				if (temp.up != '0') {
+					up[k + 1] = temp.up;
+					Answer[k] = temp.re;
+				} else
+					Answer[k] = temp.re;
 			}
 			
 			// 원래 숫자대로 다시 뒤집기
 			for (int j = Answer.length - 1, k = 0; j >= 0 ; j--,k++ ) {
 				realAnswer[k] = Answer[j];
 			}
-			s = new String(realAnswer, 0, realAnswer.length);
-			System.out.println(s.replaceFirst("^0{1,}", ""));
-			// trim
-//			System.out.println(Answer);
-//			System.out.print("# "+i+" ");		
+			s = new String(realAnswer, 0, realAnswer.length);	// 출력을 위해 char array를 string으로 변환합니다.
+			if (!s.contains("+") && !s.contains("-")) // +나 -가 없으면 0으로 간주합니다.
+				System.out.println("# " + (i+1) + "0");
+			else
+				System.out.println("# " + (i+1) + s.replaceFirst("^0{1,}", ""));	// 앞의 0을 제거합니다.		
 		}
 		sc.close();
 	}
